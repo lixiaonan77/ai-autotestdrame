@@ -20,11 +20,11 @@ jobs:
     # 具体执行步骤
     steps:
     # 步骤1：把你 GitHub 上的代码下载到服务器里
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     # 步骤2：安装 Python 3.9
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.9'
 
@@ -45,7 +45,7 @@ jobs:
 
     # 步骤5：把测试报告上传到 GitHub
     - name: Upload test report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: rag-test-report
         path: report.html
