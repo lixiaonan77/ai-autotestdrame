@@ -5,3 +5,4 @@ datasets
 langchain
 openai
 numpy
+eval_type_backport

@@ -22,11 +22,11 @@ jobs:
     # 步骤1：把你 GitHub 上的代码下载到服务器里
     - uses: actions/checkout@v4
 
-    # 步骤2：安装 Python 3.9
+    # 步骤2：安装 Python 3.11
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.11'
 
     # 步骤3：安装所有依赖包（pytest、ragas 等）
     - name: Install dependencies
