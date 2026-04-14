@@ -3,6 +3,11 @@ pytest-html
 ragas
 datasets
 langchain
+langchain-community
+langchain-huggingface
 openai
 numpy
+faiss-cpu
+huggingface-hub
+sentence-transformers
 eval_type_backport

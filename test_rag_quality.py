@@ -6,7 +6,8 @@ import pytest
 import json
 from datasets import Dataset
 from ragas import evaluate
-from ragas.metrics import faithfulness, answer_relevancy, context_recall
+# 修复 ragas 新版本导入错误
+from ragas.metrics.collections import faithfulness, answer_relevancy, context_recall
 import os
 from rag_system import compression_retriever, llm_client, MODEL_NAME, SYSTEM_ROLE
 
