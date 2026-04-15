@@ -4,6 +4,7 @@ ragas
 datasets
 langchain
 langchain-community
+langchain-text-splitters  # 这个必须加！
 langchain-huggingface
 openai
 numpy
