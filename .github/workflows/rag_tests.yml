@@ -1,51 +1,39 @@
-# 给这个自动化任务起个名字：RAG质量测试
-name: RAG Quality Tests
+# 给这个自动化任务起个名字：RAG 全量质量测试
+name: RAG Full Quality Tests
 
 # 什么时候自动开始运行？
 on:
-  # 1. 只要往 main 分支推送代码 → 自动跑
   push:
     branches: [ main ]
-  # 2. 只要在 main 分支发起合并请求 → 也自动跑
   pull_request:
     branches: [ main ]
 
 # 要执行的任务
 jobs:
-  # 任务名字：测试
   test:
-    # 在什么系统上运行？用最新版 Ubuntu 服务器
     runs-on: ubuntu-latest
 
-    # 具体执行步骤
     steps:
-    # 步骤1：把你 GitHub 上的代码下载到服务器里
     - uses: actions/checkout@v4
 
-    # 步骤2：安装 Python 3.11
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
 
-    # 步骤3：安装所有依赖包（pytest、ragas 等）
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
         pip install pytest pytest-html ragas datasets
 
-    # 步骤4：运行 RAG 自动化测试
-    - name: Run RAG tests
-      # 把你存在 GitHub 的 DeepSeek API 密钥拿来用
+    - name: Run ALL RAG tests (质量 + 对抗 + 性能 + 鲁棒性)
       env:
         DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-      # 执行测试命令：生成测试报告
       run: |
-        pytest test_rag_quality.py -v --html=report.html
+        python run_all_tests.py
 
-    # 步骤5：把测试报告上传到 GitHub
-    - name: Upload test report
+    - name: Upload combined test report
       uses: actions/upload-artifact@v4
       with:
-        name: rag-test-report
-        path: report.html
+        name: full-qa-report
+        path: combined_report.html
