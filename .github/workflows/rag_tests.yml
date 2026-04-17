@@ -39,6 +39,7 @@ jobs:
       # 把你存在 GitHub 的 DeepSeek API 密钥拿来用
       env:
         DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+	DOUBAO_API_KEY:${{DOUBAO_API_KEY}
       # 执行测试命令：生成测试报告
       run: |
         pytest test_rag_quality.py -v --html=report.html

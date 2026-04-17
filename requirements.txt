@@ -1,14 +1,24 @@
-pytest
-pytest-html
-ragas
-datasets
-langchain
-langchain-community
-langchain-text-splitters  # 这个必须加！
-langchain-huggingface
-openai
-numpy
-faiss-cpu
-huggingface-hub
-sentence-transformers
-eval_type_backport
+# 核心框架
+langchain>=0.1.0
+langchain-community>=0.0.10
+langchain-huggingface>=0.0.3
+langchain-text-splitters>=0.0.1     # 加上这一行，确保文本分割器可用
+faiss-cpu>=1.7.4
+sentence-transformers>=2.2.2
+huggingface-hub>=0.19.0             # 加上这一行，确保模型下载稳定
+openai>=1.0.0
+
+# 评估与测试
+ragas>=0.1.0
+datasets>=2.14.0
+pytest>=7.4.0
+pytest-html>=4.1.0
+pytest-benchmark>=4.0.0
+pytest-xdist>=3.5.0
+allure-pytest>=2.13.0
+
+# 工具
+numpy>=1.24.0
+pandas>=2.0.0
+PyYAML>=6.0
+easyocr==1.7.0
