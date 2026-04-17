@@ -28,7 +28,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
       # 步骤3：安装依赖包（pytest、ragas 等）
       - name: Install dependencies
@@ -38,7 +38,8 @@ jobs:
       - name: Run all tests (Quality, Adversarial, Performance, Robustness)
         # 读取密钥：DeepSeek API Key
         env:
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
+          #DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         # 执行总测试脚本
         run: python run_all_tests.py
 
