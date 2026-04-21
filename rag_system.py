@@ -1,6 +1,7 @@
 # 使用 RAGAS 框架评估 RAG 系统性能（RAGAS：用于评估检索增强生成系统的专业框架）
 from langchain_community.document_loaders import TextLoader  # 文档加载器：加载文本文件
-from langchain.text_splitter import RecursiveCharacterTextSplitter  # 文本分割器：递归按字符分割文本
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+ # 文本分割器：递归按字符分割文本
 from langchain_community.vectorstores import FAISS  # 向量数据库：用于存储文档向量，支持快速检索
 from langchain_huggingface import HuggingFaceEmbeddings  # 嵌入模型：用于将文本转换为向量
 from langchain.retrievers import ContextualCompressionRetriever  # 上下文压缩检索器：优化检索结果

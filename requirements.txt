@@ -1,28 +1,14 @@
-# 基础测试
 pytest
 pytest-html
-
-# RAG 核心依赖
 langchain
 langchain-core
 langchain-text-splitters
 langchain-community
-
-# 大模型
 openai
 deepseek
-volcengine
-
-# 数据处理
+python-dotenv
+ragas
 pandas
 numpy
-python-dotenv
-
-# 评估依赖
-ragas
-evaluate
-sentence-transformers
-
-# 修复你报错的缺失包
 eval_type_backport
 typing-extensions
