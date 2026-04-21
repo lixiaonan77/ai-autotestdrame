@@ -1,14 +1,30 @@
+# 测试框架
 pytest
 pytest-html
+
+# LangChain 核心
 langchain
 langchain-core
-langchain-text-splitters
 langchain-community
+langchain-text-splitters
+langchain-huggingface  # 这次必加！
+
+# 向量模型 / 嵌入
+sentence-transformers
+
+# 大模型
 openai
 deepseek
 python-dotenv
-ragas
+
+# 数据处理
 pandas
 numpy
+
+# 评估
+ragas
+evaluate
+
+# 兼容修复
 eval_type_backport
 typing-extensions
