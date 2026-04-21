@@ -17,23 +17,26 @@ jobs:
         with:
           python-version: '3.11'
 
-      # 🔥 强制安装所有依赖，直接写死，永不报错
-      - name: Install ALL dependencies (fixed)
+      - name: Install system dependencies (for easyocr)
+        run: sudo apt-get update && sudo apt-get install -y libgl1-mesa-glx libglib2.0-0
+
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pytest pytest-html
-          pip install langchain langchain-core langchain-community langchain-text-splitters
-          pip install langchain-huggingface sentence-transformers
+          pip install langchain langchain-core langchain-community langchain-text-splitters langchain-huggingface
+          pip install sentence-transformers transformers torch
           pip install openai deepseek python-dotenv
           pip install pandas numpy ragas eval_type_backport
+          pip install faiss-cpu easyocr
 
-      - name: Run tests
+      - name: Run all tests
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
         run: python run_all_tests.py
 
-      - name: Upload report
+      - name: Upload test report
         uses: actions/upload-artifact@v4
         with:
           name: test-report
@@ -44,11 +47,11 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
-      - name: Check result
+      - name: Check test result
         run: |
           if [ "${{ needs.run-tests.result }}" != "success" ]; then
             echo "❌ 测试失败"
             exit 1
           else
-            echo "✅ 全部通过"
+            echo "✅ 全部测试通过"
           fi

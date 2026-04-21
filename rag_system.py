@@ -4,9 +4,12 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
  # 文本分割器：递归按字符分割文本
 from langchain_community.vectorstores import FAISS  # 向量数据库：用于存储文档向量，支持快速检索
 from langchain_huggingface import HuggingFaceEmbeddings  # 嵌入模型：用于将文本转换为向量
-from langchain.retrievers import ContextualCompressionRetriever  # 上下文压缩检索器：优化检索结果
-from langchain.retrievers.document_compressors import CrossEncoderReranker  # 重排序器：对检索结果进行二次排序
-from langchain_community.cross_encoders import HuggingFaceCrossEncoder  # 交叉编码器：用于重排序的模型
+
+# ==================== 修复 1：把旧的检索器导入 换成 新版正确导入 ====================
+from langchain.retrievers.contextual_compression import ContextualCompressionRetriever
+from langchain.retrievers.document_compressors import CrossEncoderReranker
+from langchain_community.cross_encoders import HuggingFaceCrossEncoder
+
 from openai import OpenAI  # OpenAI 客户端：用于调用大模型（此处适配 DeepSeek API）
 import os  # 系统模块：用于处理文件路径、环境变量
 import easyocr
@@ -15,21 +18,14 @@ import pytest
 # ===================== 角色设定（你要求的 service team 风格）=====================
 SERVICE_TEAM = "智能测试工程师"  # 角色名称：定义系统扮演的角色
 SYSTEM_ROLE = f"""你是一名专业的{SERVICE_TEAM}，回答严格依据参考资料，简洁、准确、严谨，不编造内容。"""  # 角色提示词：约束大模型回答规范
-'''
-# 创建大模型客户端（适配 DeepSeek API，重点报错处理）
-# 报错说明：若出现"link dead"（链接失效）或"link hit security strategy"（触发安全策略），按下方备注排查
-llm_client = OpenAI(
-    api_key=os.getenv("DEEPSEEK_API_KEY"),  # 从环境变量中获取 DeepSeek API 密钥（避免硬编码泄露）
-    base_url="https://api.deepseek.com"  # DeepSeek API 基础地址（报错需优先检查该地址是否可正常访问）
-)
-MODEL_NAME = "deepseek-chat"  # 使用的 DeepSeek 模型名称（固定为deepseek-chat，无需修改）
-'''
+
 # 新增：豆包API客户端（免费可用，适配OpenAI格式）
 llm_client = OpenAI(
     api_key=os.getenv("DOUBAO_API_KEY"),  # 从环境变量获取豆包API密钥
     base_url="https://ark.cn-beijing.volces.com/api/v3" # 豆包API基础地址
 )
 MODEL_NAME = "doubao-seed-1-6-251015"  # 豆包免费模型名称
+
 # 向量嵌入模型（中文适配，轻量高效）
 # 模型说明：BAAI/bge-small-zh-v1.5 是轻量级中文嵌入模型，适配中文文档检索，无需额外配置
 embedding_model = HuggingFaceEmbeddings(model_name="BAAI/bge-small-zh-v1.5")
@@ -151,6 +147,7 @@ def get_answer_and_context(question: str):
     )
     answer = response.choices[0].message.content  # 提取回答内容
     return answer, contexts  # 返回回答和上下文列表（适配test_robustness.py测试脚本）
+
 # ==========================
 # 【新增：多模态RAG函数（本地图片+文字）】
 # ==========================
@@ -158,6 +155,7 @@ def ocr_image(image_path):
     if not image_path or not os.path.exists(image_path):
         return ""
     try:
+        reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
         result = reader.readtext(image_path, detail=0)
         return " ".join(result)
     except:
@@ -185,6 +183,7 @@ def agent_multi_turn_query(history: list, question: str):
     prompt = f"历史对话：{context}\n当前问题：{question}"
     ans, ctx = get_answer_and_context(prompt)
     return ans, ctx
+
 # --- 运行测试（验证当前RAG系统是否正常工作，含知识库重载调用）---
 if __name__ == "__main__":
     # 调用知识库重载函数（验证重载功能，可注释该句，测试初始知识库）
