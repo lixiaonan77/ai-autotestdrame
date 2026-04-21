@@ -28,31 +28,20 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
       # 步骤3：安装依赖包（pytest、ragas 等）
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-<<<<<<< HEAD
-    # 步骤4：运行 RAG 自动化测试
-    - name: Run RAG tests
-      # 把你存在 GitHub 的 DeepSeek API 密钥拿来用
-      env:
-        DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-	DOUBAO_API_KEY:${{DOUBAO_API_KEY}
-      # 执行测试命令：生成测试报告
-      run: |
-        pytest test_rag_quality.py -v --html=report.html
-=======
       # 步骤4：运行全部测试（质量、对抗、性能、鲁棒性）
       - name: Run all tests (Quality, Adversarial, Performance, Robustness)
         # 读取密钥：DeepSeek API Key
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DOUBAO_API_KEY: ${{ secrets.DOUBAO_API_KEY }}
         # 执行总测试脚本
         run: python run_all_tests.py
->>>>>>> eb4e75381f7f6fc4f1275944fd5ae85c914e896f
 
       # 步骤5：上传综合测试报告
       - name: Upload combined report
